@@ -9,7 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:restaurant_tour/main.dart';
 
 void main() {
-  testWidgets('Page loads', (WidgetTester tester) async {
+  testWidgets('Page loads', (tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const RestaurantTour());
 
