@@ -2,8 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:restaurant_tour/models/restaurant.dart';
-import 'package:restaurant_tour/query.dart';
+
+import 'models/restaurant.dart';
+import 'query.dart';
 
 const _apiKey = '<PUT YOUR API KEY HERE>';
 const _baseUrl = 'https://api.yelp.com/v3/graphql';

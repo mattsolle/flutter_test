@@ -1,0 +1,8 @@
+name: restaurant_tour
+
+sdkPath: .fvm/flutter_sdk
+
+packages:
+  - app
+  - common/**
+  - features/**
