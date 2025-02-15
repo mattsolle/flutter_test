@@ -1,0 +1,15 @@
+include: ../analysis_options.yaml
+
+# Disabling rules here will affect the entire project.
+# Prefer disabling rules in specific files using `// ignore: rule_name`
+# or `// ignore_for_file: rule_name` to avoid unnecessary global overrides.
+#
+# Only disable rules globally if absolutely necessary, and ensure any change
+# is well justified in a pull request description.
+#
+# Example:
+#   rule_name: false  # Disables this rule
+linter:
+  rules:
+    # Keep compatibility with the previous lint set for `avoid_print`
+    avoid_print: false
