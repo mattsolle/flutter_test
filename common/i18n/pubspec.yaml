@@ -1,0 +1,31 @@
+name: i18n
+description: Flutter developer coding challenge i18n package.
+version: 0.0.1
+publish_to: "none"
+
+environment:
+  sdk: ">=3.4.4 <4.0.0"
+  flutter: ">=3.0.0"
+
+dependencies:
+  collection: ^1.18.0
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  i18next: ^0.7.3
+  intl: ^0.19.0
+  provider: ^6.1.2
+
+dev_dependencies:
+  flutter_lints: ^4.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  assets:
+    # These are the localization assets, flutter can't infer wildcards here due to
+    # how it handles asset resolutions (1x, 2x, 3x, ...), so we have to add the
+    # latest dir before the files.
+    - lib/l10n/pt-BR.json
+    - lib/l10n/en-US.json

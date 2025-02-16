@@ -253,6 +253,11 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.0"
+  flutter_localizations:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -314,6 +319,29 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.0"
+  i18n:
+    dependency: "direct main"
+    description:
+      path: "../common/i18n"
+      relative: true
+    source: path
+    version: "0.0.1"
+  i18next:
+    dependency: transitive
+    description:
+      name: i18next
+      sha256: "4a2eb141fa5e20aad966ac29b4dad2293ab150f98ac3f70c69da986f426e669f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.3"
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      sha256: d6f56758b7d3014a48af9701c085700aac781a92a87a62b1333b46d8879661cf
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.19.0"
   io:
     dependency: transitive
     description:
@@ -418,6 +446,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
+  nested:
+    dependency: transitive
+    description:
+      name: nested
+      sha256: "03bac4c528c64c95c722ec99280375a6f2fc708eec17c7b3f07253b626cd2a20"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   package_config:
     dependency: transitive
     description:
@@ -442,6 +478,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.0"
+  provider:
+    dependency: transitive
+    description:
+      name: provider
+      sha256: c8a055ee5ce3fd98d6fc872478b03823ffdb448699c6ebdbbc71d59b596fd48c
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.2"
   pub_semver:
     dependency: transitive
     description:
