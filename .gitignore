@@ -91,3 +91,9 @@ app.*.map.json
 
 # Melos
 pubspec_overrides.yaml
+
+# Environment files
+# WARNING: This .env file should NEVER be committed to Git in a real project!
+# API keys and sensitive credentials must be securely stored.
+# This is only included for this coding challenge.
+# *.env
