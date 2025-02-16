@@ -31,19 +31,19 @@ flutter:
   fonts:
     - family: Lora
       fonts:
-        - asset: assets/fonts/Lora/Lora-Regular.ttf
+        - asset: common/design_system/fonts/Lora/Lora-Regular.ttf
           weight: 400
-        - asset: assets/fonts/Lora/Lora-Medium.ttf
+        - asset: common/design_system/fonts/Lora/Lora-Medium.ttf
           weight: 500
-        - asset: assets/fonts/Lora/Lora-SemiBold.ttf
+        - asset: common/design_system/fonts/Lora/Lora-SemiBold.ttf
           weight: 600
-        - asset: assets/fonts/Lora/Lora-Bold.ttf
+        - asset: common/design_system/fonts/Lora/Lora-Bold.ttf
           weight: 700
     - family: OpenSans
       fonts:
-        - asset: assets/fonts/OpenSans/OpenSans-Regular.ttf
+        - asset: common/design_system/fonts/OpenSans/OpenSans-Regular.ttf
           weight: 400
-        - asset: assets/fonts/OpenSans/OpenSans-Italic.ttf
+        - asset: common/design_system/fonts/OpenSans/OpenSans-Italic.ttf
           style: italic
-        - asset: assets/fonts/OpenSans/OpenSans-SemiBold.ttf
+        - asset: common/design_system/fonts/OpenSans/OpenSans-SemiBold.ttf
           weight: 600
