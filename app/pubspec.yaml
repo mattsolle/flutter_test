@@ -10,6 +10,7 @@ environment:
 
 dependencies:
   core: ^0.0.1
+  design_system: ^0.0.1
   flutter:
     sdk: flutter
   home: ^0.0.1
@@ -31,19 +32,19 @@ flutter:
   fonts:
     - family: Lora
       fonts:
-        - asset: common/design_system/fonts/Lora/Lora-Regular.ttf
+        - asset: packages/design_system/fonts/Lora/Lora-Regular.ttf
           weight: 400
-        - asset: common/design_system/fonts/Lora/Lora-Medium.ttf
+        - asset: packages/design_system/fonts/Lora/Lora-Medium.ttf
           weight: 500
-        - asset: common/design_system/fonts/Lora/Lora-SemiBold.ttf
+        - asset: packages/design_system/fonts/Lora/Lora-SemiBold.ttf
           weight: 600
-        - asset: common/design_system/fonts/Lora/Lora-Bold.ttf
+        - asset: packages/design_system/fonts/Lora/Lora-Bold.ttf
           weight: 700
     - family: OpenSans
       fonts:
-        - asset: common/design_system/fonts/OpenSans/OpenSans-Regular.ttf
+        - asset: packages/design_system/fonts/OpenSans/OpenSans-Regular.ttf
           weight: 400
-        - asset: common/design_system/fonts/OpenSans/OpenSans-Italic.ttf
+        - asset: packages/design_system/fonts/OpenSans/OpenSans-Italic.ttf
           style: italic
-        - asset: common/design_system/fonts/OpenSans/OpenSans-SemiBold.ttf
+        - asset: packages/design_system/fonts/OpenSans/OpenSans-SemiBold.ttf
           weight: 600

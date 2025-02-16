@@ -9,6 +9,7 @@ environment:
 
 dependencies:
   core: ^0.0.1
+  design_system: ^0.0.1
   flutter:
     sdk: flutter
   i18n: ^0.0.1
