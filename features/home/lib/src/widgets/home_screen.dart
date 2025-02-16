@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:core/core.dart';
+import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 
 import '../../l10n/home_l10n.dart';
@@ -46,7 +47,10 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(l10n.title),
+            Text(
+              l10n.title,
+              style: AppTextStyles.loraRegularHeadline,
+            ),
             ElevatedButton(
               child: const Text('Fetch Restaurants'),
               onPressed: () async {
