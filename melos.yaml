@@ -8,6 +8,11 @@ packages:
   - features/**
 
 scripts:
+  build_runner:
+    run: melos exec -- "dart run build_runner build --delete-conflicting-outputs"
+    description: Run `build_runner build` in all packages that have it.
+    packageFilters:
+      dependsOn: build_runner
   test:
     run: melos run test:dart --no-select && melos run test:flutter --no-select
     description: Run Dart/Flutter tests in all packages.

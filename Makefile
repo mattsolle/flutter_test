@@ -12,6 +12,9 @@ clean:
 	melos clean
 	melos bs
 
+build-runner:
+	melos run build_runner --no-select
+
 create-package:
 	chmod +x scripts/create-flutter-package.sh
 	@scripts/create-flutter-package.sh $(name) $(folder)
