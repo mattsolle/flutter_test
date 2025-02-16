@@ -3,13 +3,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'app_service_locator.dart';
 import 'models/restaurant.dart';
 import 'query.dart';
 
 const _apiKey = '<PUT YOUR API KEY HERE>';
 const _baseUrl = 'https://api.yelp.com/v3/graphql';
 
-void main() {
+void main() async {
+  await initAppDependencies();
   runApp(const RestaurantTour());
 }
 

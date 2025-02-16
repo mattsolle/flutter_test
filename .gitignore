@@ -88,3 +88,6 @@ app.*.map.json
 
 # fvm
 .fvm/
+
+# Melos
+pubspec_overrides.yaml
