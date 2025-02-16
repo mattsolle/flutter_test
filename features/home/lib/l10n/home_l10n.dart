@@ -1,9 +1,9 @@
 import 'package:i18n/i18n.dart';
 
-class MainL10n extends I18NextL10n {
-  MainL10n.of(super.context)
+class HomeL10n extends I18NextL10n {
+  HomeL10n.of(super.context)
       : super(
-          namespace: 'main',
+          namespace: 'home',
         );
 
   String get title => localize('title');

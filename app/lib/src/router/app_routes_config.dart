@@ -1,4 +1,5 @@
 import 'package:core/go_router.dart';
+import 'package:home/home.dart';
 
 import '../splash/splash_route.dart';
 
@@ -24,5 +25,6 @@ abstract class AppRoutesConfig {
 
   static List<RouteBase> getRoutes() => [
         SplashRoute(),
+        HomeRoute(),
       ];
 }

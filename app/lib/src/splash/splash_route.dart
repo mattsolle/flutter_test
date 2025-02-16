@@ -10,9 +10,7 @@ class SplashRoute extends GoRoute {
           path: '/',
           builder: (context, state) {
             return SplashScreen(
-              onAnimationDone: () {
-                print('onAnimationDone');
-              },
+              onAnimationDone: () => context.goNamed(RouteNames.home),
             );
           },
         );
