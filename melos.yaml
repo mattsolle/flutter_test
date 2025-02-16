@@ -6,3 +6,32 @@ packages:
   - app
   - common/**
   - features/**
+
+scripts:
+  test:
+    run: melos run test:dart --no-select && melos run test:flutter --no-select
+    description: Run Dart/Flutter tests in all packages.
+
+  test:dart:
+    run: melos exec --concurrency=1 --fail-fast -- "dart test"
+    description: Run Dart test in all dart packages.
+    packageFilters:
+      flutter: false
+      dirExists: test
+      ignore: "*example*"
+
+  test:flutter:
+    run: melos exec --concurrency=1 --fail-fast -- "flutter test --coverage --test-randomize-ordering-seed random"
+    description: Run Flutter test in all flutter packages.
+    packageFilters:
+      flutter: true
+      dirExists: test
+      ignore: "*example*"
+
+  test:flutterWithHtmlCoverage:
+    run: melos exec --concurrency=1 --fail-fast "flutter test --coverage --test-randomize-ordering-seed random --reporter expanded && genhtml coverage/lcov.info --output-directory coverage/html && open coverage/html/index.html"
+    description: Run Flutter test in all flutter packages with HTML coverage.
+    packageFilters:
+      flutter: true
+      dirExists: test
+      ignore: "*example*"

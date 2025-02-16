@@ -45,12 +45,14 @@ class HttpClientImpl extends HttpClient {
         .then((options) {
           return options.copyWith(method: method);
         })
-        .then((options) => dio.request(
-              request.path,
-              queryParameters: request.queryParameters,
-              data: request.payload,
-              options: options,
-            ))
+        .then(
+          (options) => dio.request(
+            request.path,
+            queryParameters: request.queryParameters,
+            data: request.payload,
+            options: options,
+          ),
+        )
         .then(
           (onValue) => HttpResponse(
             request: request,
