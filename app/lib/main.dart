@@ -9,7 +9,7 @@ import 'app_service_locator.dart';
 import 'l10n/main_l10n.dart';
 import 'models/restaurant.dart';
 import 'query.dart';
-import 'src/splash/splash_screen.dart';
+import 'src/widgets/app.dart';
 
 const _baseUrl = 'https://api.yelp.com/v3/graphql';
 
@@ -23,7 +23,7 @@ void main() async {
         formats: formatters,
         missingInterpolationHandler: interpolationFallback,
       ),
-      child: const RestaurantTour(),
+      child: const App(),
     ),
   );
 }
@@ -38,11 +38,7 @@ class RestaurantTour extends StatelessWidget {
       title: 'Restaurant Tour',
       supportedLocales: i18n.supportedLocales,
       localizationsDelegates: i18n.localizationsDelegates,
-      home: SplashScreen(
-        onAnimationDone: () {
-          print('onAnimationDone');
-        },
-      ),
+      home: const HomePage(),
     );
   }
 }
