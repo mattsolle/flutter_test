@@ -2,16 +2,29 @@ import 'dart:convert';
 
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:i18n/i18n.dart';
+import 'package:i18n/i18next.dart';
 
 import 'app_service_locator.dart';
+import 'l10n/main_l10n.dart';
 import 'models/restaurant.dart';
 import 'query.dart';
 
 const _baseUrl = 'https://api.yelp.com/v3/graphql';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   await initAppDependencies();
-  runApp(const RestaurantTour());
+  runApp(
+    I18nProvider.fromAssetBundle(
+      i18nextOptions: I18NextOptions(
+        formats: formatters,
+        missingInterpolationHandler: interpolationFallback,
+      ),
+      child: const RestaurantTour(),
+    ),
+  );
 }
 
 class RestaurantTour extends StatelessWidget {
@@ -19,9 +32,12 @@ class RestaurantTour extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    final i18n = I18nProvider.of(context);
+    return MaterialApp(
       title: 'Restaurant Tour',
-      home: HomePage(),
+      supportedLocales: i18n.supportedLocales,
+      localizationsDelegates: i18n.localizationsDelegates,
+      home: const HomePage(),
     );
   }
 }
@@ -57,12 +73,13 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = MainL10n.of(context);
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Restaurant Tour'),
+            Text(l10n.title),
             ElevatedButton(
               child: const Text('Fetch Restaurants'),
               onPressed: () async {
