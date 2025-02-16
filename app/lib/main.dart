@@ -1,15 +1,16 @@
 import 'dart:convert';
 
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
+import 'app_service_locator.dart';
 import 'models/restaurant.dart';
 import 'query.dart';
 
-const _apiKey = '<PUT YOUR API KEY HERE>';
 const _baseUrl = 'https://api.yelp.com/v3/graphql';
 
-void main() {
+void main() async {
+  await initAppDependencies();
   runApp(const RestaurantTour());
 }
 
@@ -31,21 +32,18 @@ class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   Future<RestaurantQueryResult?> getRestaurants({int offset = 0}) async {
-    final headers = {
-      'Authorization': 'Bearer $_apiKey',
-      'Content-Type': 'application/graphql',
-    };
-
     try {
-      final response = await http.post(
-        Uri.parse(_baseUrl),
-        headers: headers,
-        body: query(offset),
+      final client = di<HttpClient>();
+      final response = await client.post(
+        HttpRequest(
+          path: _baseUrl,
+          payload: query(offset),
+        ),
       );
 
       if (response.statusCode == 200) {
         return RestaurantQueryResult.fromJson(
-          jsonDecode(response.body)['data']['search'],
+          jsonDecode(response.dataJson!)['data']['search'],
         );
       } else {
         print('Failed to load restaurants: ${response.statusCode}');

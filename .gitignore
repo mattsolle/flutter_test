@@ -29,7 +29,8 @@
 .packages
 .pub-cache/
 .pub/
-/build/
+**/build/
+**/coverage/
 **/pubspec.lock
 !app/pubspec.lock
 
@@ -88,3 +89,9 @@ app.*.map.json
 
 # fvm
 .fvm/
+
+# Melos
+pubspec_overrides.yaml
+
+# Environment files
+*.env

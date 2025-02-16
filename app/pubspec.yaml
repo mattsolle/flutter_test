@@ -1,16 +1,15 @@
 name: restaurant_tour
 description: Flutter developer coding challenge starter project.
-
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
-
 
 environment:
   sdk: ">=3.1.0 <4.0.0"
   flutter: ">=3.19.6"
 
 dependencies:
+  core: ^0.0.1
   flutter:
     sdk: flutter
   http: ^1.2.2
@@ -26,6 +25,8 @@ dev_dependencies:
 flutter:
   generate: true
   uses-material-design: true
+  assets:
+    - ../.env
   fonts:
     - family: Lora
       fonts:
@@ -45,4 +46,3 @@ flutter:
           style: italic
         - asset: assets/fonts/OpenSans/OpenSans-SemiBold.ttf
           weight: 600
-        
