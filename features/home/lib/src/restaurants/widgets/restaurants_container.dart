@@ -1,4 +1,6 @@
+import 'package:core/core.dart';
 import 'package:core/flutter_bloc.dart';
+import 'package:core/go_router.dart';
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +24,9 @@ class RestaurantsContainer
             } else {
               return RestaurantsScreen(
                 controller: state.controller,
+                onRestaurantPressed: (restaurant) {
+                  context.goNamed(RouteNames.restaurant, extra: restaurant);
+                },
               );
             }
           },

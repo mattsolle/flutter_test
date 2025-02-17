@@ -4,15 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
+import '../../widgets/open_status_widget.dart';
+import '../../widgets/price_category_widget.dart';
 import '../data/models/restaurant.dart';
+import 'image_error.dart';
 
 class RestaurantsScreen extends StatelessWidget {
   const RestaurantsScreen({
     super.key,
     required this.controller,
+    required this.onRestaurantPressed,
   });
 
   final PagingController<int, Restaurant> controller;
+  final ValueChanged<Restaurant> onRestaurantPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +43,10 @@ class RestaurantsScreen extends StatelessWidget {
             );
           },
           itemBuilder: (context, restaurant, index) {
-            return _RestaurantItem(restaurant: restaurant);
+            return _RestaurantItem(
+              restaurant: restaurant,
+              onPressed: () => onRestaurantPressed(restaurant),
+            );
           },
         ),
       ),
@@ -49,50 +57,55 @@ class RestaurantsScreen extends StatelessWidget {
 class _RestaurantItem extends StatelessWidget {
   const _RestaurantItem({
     required this.restaurant,
+    required this.onPressed,
   });
 
   final Restaurant restaurant;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.white,
-      elevation: x1,
-      child: SizedBox(
-        height: 104,
-        width: double.maxFinite,
-        child: Row(
-          children: [
-            _RestaurantPhoto(
-              photoUrl: restaurant.photos?.first,
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: x2),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        restaurant.name ?? 'Restaurant Name',
-                        style: AppTextStyles.loraRegularTitle,
+    return GestureDetector(
+      onTap: onPressed,
+      child: Card(
+        color: Colors.white,
+        elevation: x1,
+        child: SizedBox(
+          height: 104,
+          width: double.maxFinite,
+          child: Row(
+            children: [
+              _RestaurantPhoto(
+                photoUrl: restaurant.photos?.first,
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: x2),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          restaurant.name ?? 'Restaurant Name',
+                          style: AppTextStyles.loraRegularTitle,
+                        ),
                       ),
-                    ),
-                    if (restaurant.price != null ||
-                        restaurant.categories?.first != null)
-                      _PriceCategory(
-                        price: restaurant.price,
-                        category: restaurant.categories?.first.title,
+                      if (restaurant.price != null ||
+                          restaurant.categories?.first != null)
+                        PriceCategoryWidget(
+                          price: restaurant.price,
+                          category: restaurant.categories?.first.title,
+                        ),
+                      _Rating(
+                        rating: restaurant.rating,
+                        isOpen: restaurant.isOpen,
                       ),
-                    _Rating(
-                      rating: restaurant.rating,
-                      isOpen: restaurant.isOpen,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -109,7 +122,7 @@ class _RestaurantPhoto extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (photoUrl == null) {
-      return const _Placeholder();
+      return const ImageError();
     } else {
       return Padding(
         padding: const EdgeInsets.all(x2),
@@ -120,58 +133,14 @@ class _RestaurantPhoto extends StatelessWidget {
             child: CachedNetworkImage(
               imageUrl: photoUrl!,
               fit: BoxFit.cover,
+              errorListener: (_) {},
               placeholder: (context, url) => const LoadingWidget(),
-              errorWidget: (context, url, error) => const _Placeholder(),
+              errorWidget: (context, url, error) => const ImageError(),
             ),
           ),
         ),
       );
     }
-  }
-}
-
-class _Placeholder extends StatelessWidget {
-  const _Placeholder();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey[300],
-        borderRadius: BorderRadius.circular(x2),
-      ),
-      child: const Icon(Icons.error_outline_outlined),
-    );
-  }
-}
-
-class _PriceCategory extends StatelessWidget {
-  const _PriceCategory({
-    required this.price,
-    required this.category,
-  });
-
-  final String? price;
-  final String? category;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        if (price != null)
-          Text(
-            price!,
-            style: AppTextStyles.openRegularText,
-          ),
-        const SizedBox(width: x1),
-        if (category != null)
-          Text(
-            category!,
-            style: AppTextStyles.openRegularText,
-          ),
-      ],
-    );
   }
 }
 
@@ -202,24 +171,7 @@ class _Rating extends StatelessWidget {
                 color: Colors.amber,
               ),
             ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                isOpen ? 'Open Now' : 'Closed',
-                style: AppTextStyles.openRegularText,
-              ),
-              const SizedBox(width: x1),
-              Container(
-                width: x2,
-                height: x2,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: isOpen ? Colors.green : Colors.red,
-                ),
-              ),
-            ],
-          ),
+          OpenStatusWidget(isOpen: isOpen),
         ],
       ),
     );
