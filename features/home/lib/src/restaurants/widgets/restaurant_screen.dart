@@ -14,11 +14,13 @@ class RestaurantScreen extends StatelessWidget {
     required this.restaurant,
     required this.onBackPressed,
     required this.onLikePressed,
+    required this.bookmarked,
   });
 
   final Restaurant restaurant;
   final VoidCallback onBackPressed;
   final VoidCallback onLikePressed;
+  final bool bookmarked;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,9 @@ class RestaurantScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.favorite_border),
+            icon: Icon(
+              bookmarked ? Icons.favorite : Icons.favorite_border,
+            ),
             onPressed: onLikePressed,
           ),
         ],

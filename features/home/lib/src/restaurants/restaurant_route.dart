@@ -1,10 +1,9 @@
-import 'dart:developer';
-
 import 'package:core/core.dart';
 import 'package:core/go_router.dart';
 
+import '../bookmarks/blocs/bookmarks_bloc.dart';
 import 'data/models/restaurant.dart';
-import 'widgets/restaurant_screen.dart';
+import 'widgets/restaurant_container.dart';
 
 class RestaurantRoute extends GoRoute {
   RestaurantRoute()
@@ -13,12 +12,10 @@ class RestaurantRoute extends GoRoute {
           path: 'restaurant',
           builder: (context, state) {
             final restaurant = state.extra as Restaurant;
-            return RestaurantScreen(
-              restaurant: restaurant,
-              onBackPressed: context.pop,
-              onLikePressed: () {
-                log('TODO: onLikePressed');
-              },
+            return BookmarksBlocProvider(
+              child: RestaurantContainer(
+                restaurant: restaurant,
+              ),
             );
           },
         );
