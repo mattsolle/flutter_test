@@ -11,7 +11,7 @@ import 'package:home/src/widgets/home_screen.dart';
 void main() {
   testWidgets('Page loads', (tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const HomeScreen());
+    await tester.pumpWidget(const HomeScreenOld());
 
     // Verify that tests will run
     expect(find.text('Fetch Restaurants'), findsOneWidget);

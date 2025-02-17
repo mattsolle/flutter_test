@@ -5,15 +5,17 @@ import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 
 import '../../l10n/home_l10n.dart';
+import '../restaurants/blocs/restaurants_cubit.dart';
 import '../restaurants/data/models/restaurant.dart';
 import '../restaurants/data/queries/query.dart';
+import '../restaurants/widgets/restaurants_container.dart';
 
 const _baseUrl = 'https://api.yelp.com/v3/graphql';
 
 // TODO: Architect code
 // This is just a POC of the API integration
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class HomeScreenOld extends StatelessWidget {
+  const HomeScreenOld({super.key});
 
   Future<RestaurantQueryResult?> getRestaurants({int offset = 0}) async {
     try {
@@ -68,6 +70,67 @@ class HomeScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({
+    super.key,
+  });
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text(
+          'RestauranTour',
+          style: AppTextStyles.loraRegularHeadline,
+        ),
+        bottom: TabBar(
+          isScrollable: true,
+          controller: _tabController,
+          indicatorColor: Colors.black,
+          labelColor: Colors.black,
+          unselectedLabelColor: Colors.grey,
+          labelStyle: AppTextStyles.openRegularTitleSemiBold,
+          tabAlignment: TabAlignment.center,
+          tabs: const [
+            Tab(text: 'All Restaurants'),
+            Tab(text: 'My Favorites'),
+          ],
+        ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          RestaurantsCubitProvider(
+            child: RestaurantsContainer(),
+          ),
+          const LoadingWidget(),
+        ],
       ),
     );
   }
