@@ -6,4 +6,5 @@ abstract final class RouteNames {
 
   // Home
   static const String home = 'Home Screen';
+  static const String restaurant = 'Restaurant Screen';
 }

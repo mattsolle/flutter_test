@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 
 class AppTextStyles {
   ////----- Lora -----//
+  static const loraRegularBigHeadline = TextStyle(
+    fontFamily: 'Lora',
+    fontWeight: FontWeight.w700,
+    fontSize: 28.0,
+  );
   static const loraRegularHeadline = TextStyle(
     fontFamily: 'Lora',
     fontWeight: FontWeight.w700,

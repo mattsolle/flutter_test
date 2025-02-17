@@ -8,11 +8,15 @@ environment:
   flutter: ">=3.0.0"
 
 dependencies:
+  cached_network_image: ^3.4.1
   core: ^0.0.1
   design_system: ^0.0.1
+  equatable: ^2.0.7
   flutter:
     sdk: flutter
+  flutter_rating_bar: ^4.0.1
   i18n: ^0.0.1
+  infinite_scroll_pagination: ^4.1.0
   json_annotation: ^4.9.0
 
 dev_dependencies:

@@ -1,5 +1,9 @@
 {
     "home": {
-        "title": "Restaurant Tour"
+        "title": "Restaurant Tour",
+        "restaurant": {
+            "opened": "Open Now",
+            "closed": "Closed"
+        }
     }
 }
