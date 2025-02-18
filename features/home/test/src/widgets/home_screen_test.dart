@@ -1,7 +1,7 @@
 import 'package:core/core.dart';
 import 'package:core/get_it.dart';
 import 'package:core/test_utils.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/basic.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:home/l10n/home_l10n.dart';
 import 'package:home/src/bookmarks/data/models/bookmarks.dart';
@@ -19,7 +19,6 @@ class MockRestaurantsRepository extends Mock implements RestaurantsRepository {}
 class MockLocalRepository extends Mock implements LocalRepository<Bookmarks> {}
 
 void main() {
-  late HomeL10n l10n;
   late GetIt getIt;
   late MockRestaurantsCubit mockRestaurantsCubit;
   late MockRestaurantsRepository mockRestaurantsRepository;
@@ -40,43 +39,101 @@ void main() {
     getIt.registerSingleton<LocalRepository<Bookmarks>>(MockLocalRepository());
   });
 
-  Widget setupHomeScreen() {
-    return setupAppTest(
-      builder: (context) {
-        l10n = HomeL10n.of(context);
-        return const HomeScreen();
-      },
-    );
-  }
+  testWidgets(
+    'renders HomeScreen with correct AppBar title',
+    (tester) async {
+      late HomeL10n l10n;
 
-  testWidgets('HomeScreen test', (tester) async {
-    await tester.pumpWidget(setupHomeScreen());
-    await tester.pumpAndSettle();
+      await tester.pumpWidget(
+        SetupAppTester(
+          child: Builder(
+            builder: (context) {
+              l10n = HomeL10n.of(context);
+              return const HomeScreen();
+            },
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
 
-    // renders HomeScreen with correct AppBar title
-    expect(find.text(l10n.title), findsOneWidget);
+      expect(find.text(l10n.title), findsOneWidget);
+    },
+  );
 
-    // renders tabs with correct labels
-    expect(find.text(l10n.restaurantsTab), findsOneWidget);
-    expect(find.text(l10n.bookmarksTab), findsOneWidget);
+  testWidgets(
+    'renders tabs with correct labels',
+    (tester) async {
+      late HomeL10n l10n;
 
-    // switches to Bookmarks tab when tapped
-    expect(find.byType(RestaurantsContainer), findsOneWidget);
-    expect(find.byType(BookmarkedRestaurantsContainer), findsNothing);
+      await tester.pumpWidget(
+        SetupAppTester(
+          child: Builder(
+            builder: (context) {
+              l10n = HomeL10n.of(context);
+              return const HomeScreen();
+            },
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
 
-    await tester.tap(find.text(l10n.bookmarksTab));
-    await tester.pumpAndSettle();
+      expect(find.text(l10n.restaurantsTab), findsOneWidget);
+      expect(find.text(l10n.bookmarksTab), findsOneWidget);
+    },
+  );
 
-    expect(find.byType(RestaurantsContainer), findsNothing);
-    expect(find.byType(BookmarkedRestaurantsContainer), findsOneWidget);
+  testWidgets(
+    'switches to Bookmarks tab when tapped',
+    (tester) async {
+      late HomeL10n l10n;
 
-    // maintains state when switching tabs
-    await tester.tap(find.text(l10n.bookmarksTab));
-    await tester.pumpAndSettle();
-    expect(find.byType(BookmarkedRestaurantsContainer), findsOneWidget);
+      await tester.pumpWidget(
+        SetupAppTester(
+          child: Builder(
+            builder: (context) {
+              l10n = HomeL10n.of(context);
+              return const HomeScreen();
+            },
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
 
-    await tester.tap(find.text(l10n.restaurantsTab));
-    await tester.pumpAndSettle();
-    expect(find.byType(RestaurantsContainer), findsOneWidget);
-  });
+      expect(find.byType(RestaurantsContainer), findsOneWidget);
+      expect(find.byType(BookmarkedRestaurantsContainer), findsNothing);
+
+      await tester.tap(find.text(l10n.bookmarksTab));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(RestaurantsContainer), findsNothing);
+      expect(find.byType(BookmarkedRestaurantsContainer), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'maintains state when switching tabs',
+    (tester) async {
+      late HomeL10n l10n;
+
+      await tester.pumpWidget(
+        SetupAppTester(
+          child: Builder(
+            builder: (context) {
+              l10n = HomeL10n.of(context);
+              return const HomeScreen();
+            },
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text(l10n.bookmarksTab));
+      await tester.pumpAndSettle();
+      expect(find.byType(BookmarkedRestaurantsContainer), findsOneWidget);
+
+      await tester.tap(find.text(l10n.restaurantsTab));
+      await tester.pumpAndSettle();
+      expect(find.byType(RestaurantsContainer), findsOneWidget);
+    },
+  );
 }

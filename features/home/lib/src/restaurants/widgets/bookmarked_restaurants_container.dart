@@ -2,7 +2,6 @@ import 'package:core/core.dart';
 import 'package:core/flutter_bloc.dart';
 import 'package:core/go_router.dart';
 import 'package:design_system/design_system.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../blocs/bookmarked_restaurants_cubit.dart';
 import '../blocs/bookmarked_restaurants_state.dart';
@@ -30,8 +29,7 @@ class BookmarkedRestaurantsContainer extends BlocBuilder<
               return ErrorWidget(message: l10n.noItems);
             } else {
               return RestaurantsScreen(
-                controller: PagingController(firstPageKey: 0)
-                  ..appendLastPage(state.restaurants),
+                restaurants: state.restaurants,
                 onRestaurantPressed: (restaurant) {
                   context
                       .pushNamed(RouteNames.restaurant, extra: restaurant)
