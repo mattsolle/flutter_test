@@ -2,7 +2,14 @@ import 'package:equatable/equatable.dart';
 
 import '../data/models/restaurant.dart';
 
-enum BookmarkedRestaurantsStatus { idle, loading, success, empty, error }
+enum BookmarkedRestaurantsStatus {
+  idle,
+  loading,
+  success,
+  empty,
+  error,
+  yelpLimit
+}
 
 class BookmarkedRestaurantsState extends Equatable {
   const BookmarkedRestaurantsState({

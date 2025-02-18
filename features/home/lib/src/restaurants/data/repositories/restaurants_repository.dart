@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:core/core.dart';
 
+import '../models/exceptions.dart';
 import '../models/restaurant.dart';
 import '../queries/get_restaurant_by_id_query.dart';
 import '../queries/get_restaurants_query.dart';
@@ -48,6 +49,12 @@ class RestaurantsRepositoryImpl extends RestaurantsRepository {
       final int total = decodedData['data']['search']['total'];
 
       return (result.restaurants ?? [], total);
+    } on HttpErrorResponse catch (error) {
+      if (error.response?.contains('DAILY_POINTS_LIMIT_REACHED') == true) {
+        throw YelpRateLimitException();
+      } else {
+        throw Exception('Failed to fetch restaurants');
+      }
     } catch (error) {
       log('Error fetching restaurants: $error');
       throw Exception('Failed to fetch restaurants');
@@ -77,6 +84,12 @@ class RestaurantsRepositoryImpl extends RestaurantsRepository {
       return Restaurant.fromJson(
         decodedData['data']['business'],
       );
+    } on HttpErrorResponse catch (error) {
+      if (error.response?.contains('DAILY_POINTS_LIMIT_REACHED') == true) {
+        throw YelpRateLimitException();
+      } else {
+        throw Exception('Failed to fetch restaurants');
+      }
     } catch (error) {
       log('Error getting restaurant ($id): $error');
       throw Exception('Failed to get restaurant');

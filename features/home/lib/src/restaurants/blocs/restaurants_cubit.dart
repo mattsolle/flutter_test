@@ -2,6 +2,7 @@ import 'package:core/core.dart';
 import 'package:core/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
+import '../data/models/exceptions.dart';
 import '../data/repositories/restaurants_repository.dart';
 import 'restaurants_state.dart';
 
@@ -41,6 +42,8 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
           offset: offset,
         ),
       );
+    } on YelpRateLimitException catch (_) {
+      emit(state.copyWith(status: RestaurantsStatus.yelpLimit));
     } catch (error) {
       if (state.controller.itemList?.isNotEmpty == true) {
         state.controller.error = error;

@@ -68,6 +68,7 @@ class HttpClientImpl extends HttpClient {
                 message: error.message,
                 statusCode: error.response?.statusCode,
                 headers: error.response?.headers.map,
+                response: error.response?.toString(),
               );
             }
             throw error;
