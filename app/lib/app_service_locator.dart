@@ -10,6 +10,6 @@ Future<void> initAppDependencies() async {
 }
 
 Future<void> _appServiceLocator() async {
-  await dotenv.load(fileName: '../.env');
+  await dotenv.load(fileName: '.env');
   await di.allReady();
 }
