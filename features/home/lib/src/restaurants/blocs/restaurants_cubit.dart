@@ -16,7 +16,7 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
           ),
         ) {
     state.controller.addPageRequestListener(_fetchPage);
-    _fetchPage(0);
+    Future.microtask(() => _fetchPage(0));
   }
 
   final RestaurantsRepository repository;
