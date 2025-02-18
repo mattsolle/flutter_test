@@ -24,3 +24,6 @@ test-flutter:
 
 test-flutter-coverage:
 	melos run test:flutterWithHtmlCoverage --no-select
+
+run-integration-tests:
+	melos run test:integration --no-select
