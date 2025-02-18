@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'app_colors.dart';
+
 /// The main theme used by the app.
 /// This is the root theme for most or all of app design system's
 /// foundational values.
@@ -33,6 +35,7 @@ class AppTheme extends Provider<AppThemeData> {
 final class AppThemeData {
   AppThemeData._({
     required this.theme,
+    required this.colors,
   });
 
   //TODO: Set Light Theme
@@ -41,7 +44,14 @@ final class AppThemeData {
       context,
       brightness: Brightness.light,
     );
-    return AppThemeData._(theme: theme);
+    return AppThemeData._(
+      theme: theme,
+      colors: const AppColors(
+        indicatorColor: Colors.black,
+        labelColor: Colors.black,
+        unselectedLabelColor: Colors.grey,
+      ),
+    );
   }
 
   //TODO: Set Dark Theme
@@ -50,10 +60,18 @@ final class AppThemeData {
       context,
       brightness: Brightness.dark,
     );
-    return AppThemeData._(theme: theme);
+    return AppThemeData._(
+      theme: theme,
+      colors: const AppColors(
+        indicatorColor: Colors.white,
+        labelColor: Colors.white,
+        unselectedLabelColor: Colors.grey,
+      ),
+    );
   }
 
   final ThemeData theme;
+  final AppColors colors;
 
   /// This method is responsible for constructing the foundational `ThemeData`
   /// used throughout the application. All global component styles, should be

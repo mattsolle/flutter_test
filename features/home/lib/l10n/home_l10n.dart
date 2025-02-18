@@ -7,4 +7,6 @@ class HomeL10n extends I18NextL10n {
         );
 
   String get title => localize('title');
+  String get restaurantsTab => localize('restaurantsTab');
+  String get bookmarksTab => localize('bookmarksTab');
 }

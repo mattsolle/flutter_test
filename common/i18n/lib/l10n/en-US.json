@@ -1,6 +1,8 @@
 {
     "home": {
-        "title": "Restaurant Tour",
+        "title": "RestaurantTour",
+        "restaurantsTab": "All Restaurants",
+        "bookmarksTab": "My Favorites",
         "restaurant": {
             "opened": "Open Now",
             "closed": "Closed"
