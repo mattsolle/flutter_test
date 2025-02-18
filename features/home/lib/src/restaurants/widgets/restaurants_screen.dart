@@ -1,12 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:design_system/design_system.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide ErrorWidget;
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../widgets/open_status_widget.dart';
 import '../../widgets/price_category_widget.dart';
 import '../data/models/restaurant.dart';
+import '../l10n/errors_l10n.dart';
+import '../l10n/restaurant_l10n.dart';
 import 'image_error.dart';
 
 class RestaurantsScreen extends StatelessWidget {
@@ -21,6 +23,7 @@ class RestaurantsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = ErrorsL10n.of(context);
     return Padding(
       padding: const EdgeInsets.all(x2),
       child: PagedListView.separated(
@@ -30,17 +33,13 @@ class RestaurantsScreen extends StatelessWidget {
         ),
         builderDelegate: PagedChildBuilderDelegate<Restaurant>(
           noItemsFoundIndicatorBuilder: (context) {
-            return const Center(
-              child: Text('No items found'),
-            );
+            return ErrorWidget(message: l10n.noItems);
           },
           newPageProgressIndicatorBuilder: (context) {
             return const LoadingWidget();
           },
           newPageErrorIndicatorBuilder: (context) {
-            return const Center(
-              child: Text('New Page Error'),
-            );
+            return ErrorWidget(message: l10n.newPage);
           },
           itemBuilder: (context, restaurant, index) {
             return _RestaurantItem(
@@ -65,6 +64,7 @@ class _RestaurantItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = RestaurantL10n.of(context);
     return GestureDetector(
       onTap: onPressed,
       child: Card(
@@ -86,7 +86,7 @@ class _RestaurantItem extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          restaurant.name ?? 'Restaurant Name',
+                          restaurant.name ?? l10n.emptyName,
                           style: AppTextStyles.loraRegularTitle,
                         ),
                       ),

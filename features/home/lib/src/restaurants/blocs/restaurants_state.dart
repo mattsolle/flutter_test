@@ -3,7 +3,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../data/models/restaurant.dart';
 
-enum RestaurantsStatus { loading, success, error }
+enum RestaurantsStatus { loading, success, error, yelpLimit }
 
 class RestaurantsState extends Equatable {
   const RestaurantsState({

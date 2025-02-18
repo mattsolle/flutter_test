@@ -5,7 +5,14 @@
         "bookmarksTab": "Meus Favoritos",
         "restaurant": {
             "opened": "Aberto",
-            "closed": "Fechado"
+            "closed": "Fechado",
+            "emptyName": "Nome do Restaurante"
         }
+    },
+    "errors": {
+        "common": "Algo deu errado",
+        "noItems": "Nenhum ítem achado",
+        "newPage": "Erro na nova página",
+        "yelp": "Você excedeu o limite de requisições da API do Yelp"
     }
 }

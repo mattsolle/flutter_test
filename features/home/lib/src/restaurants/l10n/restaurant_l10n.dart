@@ -9,4 +9,5 @@ class RestaurantL10n extends I18NextL10n {
 
   String get opened => localize('opened');
   String get closed => localize('closed');
+  String get emptyName => localize('emptyName');
 }
