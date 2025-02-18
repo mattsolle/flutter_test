@@ -9,13 +9,20 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await initAppDependencies();
-  runApp(
-    I18nProvider.fromAssetBundle(
+  runApp(const RestaurantTourApp());
+}
+
+class RestaurantTourApp extends StatelessWidget {
+  const RestaurantTourApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return I18nProvider.fromAssetBundle(
       i18nextOptions: I18NextOptions(
         formats: formatters,
         missingInterpolationHandler: interpolationFallback,
       ),
       child: const App(),
-    ),
-  );
+    );
+  }
 }

@@ -1,0 +1,1 @@
+class YelpRateLimitException implements Exception {}

@@ -4,6 +4,7 @@ import 'package:core/core.dart';
 import 'package:core/flutter_bloc.dart';
 
 import '../../bookmarks/data/models/bookmarks.dart';
+import '../data/models/exceptions.dart';
 import '../data/repositories/restaurants_repository.dart';
 import 'bookmarked_restaurants_state.dart';
 
@@ -32,26 +33,24 @@ class BookmarkedRestaurantsCubit extends Cubit<BookmarkedRestaurantsState> {
 
       final restaurants = state.restaurants.toList();
       for (final id in bookmarks.ids) {
-        final restaurant = await restaurantsRepository
-            .getRestaurantById(id)
-            .catchError((error) {
-          log('Failed to get restaurant $id');
-          return null;
-        });
+        final restaurant = await restaurantsRepository.getRestaurantById(id);
         if (restaurant != null) {
           restaurants.add(restaurant);
-          emit(
-            state.copyWith(
-              status: BookmarkedRestaurantsStatus.success,
-              restaurants: restaurants,
-            ),
-          );
         }
       }
 
       if (restaurants.isEmpty) {
         emit(state.copyWith(status: BookmarkedRestaurantsStatus.empty));
+      } else {
+        emit(
+          state.copyWith(
+            status: BookmarkedRestaurantsStatus.success,
+            restaurants: restaurants,
+          ),
+        );
       }
+    } on YelpRateLimitException catch (_) {
+      emit(state.copyWith(status: BookmarkedRestaurantsStatus.yelpLimit));
     } catch (error) {
       log('Failed to fetch restaurants');
       emit(state.copyWith(status: BookmarkedRestaurantsStatus.error));

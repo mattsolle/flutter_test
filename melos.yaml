@@ -40,3 +40,11 @@ scripts:
       flutter: true
       dirExists: test
       ignore: "*example*"
+
+  test:integration:
+    run: melos exec --concurrency=1 --fail-fast -- "flutter test integration_test"
+    description: Run Flutter integration tests in all packages with integration tests.
+    packageFilters:
+      flutter: true
+      dirExists: integration_test
+      ignore: "*example*"

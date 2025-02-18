@@ -20,15 +20,19 @@ dependencies:
 
 dev_dependencies:
   flutter_lints: ^4.0.0
+  flutter_secure_storage: ^9.2.4
   flutter_test:
     sdk: flutter
+  integration_test:
+    sdk: flutter
+  mocktail: ^1.0.4
 
 flutter:
   generate: true
   uses-material-design: true
   assets:
     - assets/animations/
-    - ../.env
+    - .env
   fonts:
     - family: Lora
       fonts:

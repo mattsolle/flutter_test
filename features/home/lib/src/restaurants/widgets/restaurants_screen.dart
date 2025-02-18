@@ -1,17 +1,77 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:design_system/design_system.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide ErrorWidget;
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../widgets/open_status_widget.dart';
 import '../../widgets/price_category_widget.dart';
 import '../data/models/restaurant.dart';
+import '../l10n/errors_l10n.dart';
+import '../l10n/restaurant_l10n.dart';
 import 'image_error.dart';
 
 class RestaurantsScreen extends StatelessWidget {
   const RestaurantsScreen({
     super.key,
+    this.controller,
+    this.restaurants,
+    required this.onRestaurantPressed,
+  }) : assert(
+          (controller != null) ^ (restaurants != null),
+          'Either controller or restaurants must be provided, but not both.',
+        );
+
+  final PagingController<int, Restaurant>? controller;
+  final List<Restaurant>? restaurants;
+  final ValueChanged<Restaurant> onRestaurantPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(x2),
+      child: controller == null
+          ? _ListView(
+              restaurants: restaurants!,
+              onRestaurantPressed: onRestaurantPressed,
+            )
+          : _PagedListView(
+              controller: controller!,
+              onRestaurantPressed: onRestaurantPressed,
+            ),
+    );
+  }
+}
+
+class _ListView extends StatelessWidget {
+  const _ListView({
+    required this.restaurants,
+    required this.onRestaurantPressed,
+  });
+
+  final List<Restaurant> restaurants;
+  final ValueChanged<Restaurant> onRestaurantPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      itemCount: restaurants.length,
+      separatorBuilder: (context, index) => const Padding(
+        padding: EdgeInsets.only(bottom: x2),
+      ),
+      itemBuilder: (context, index) {
+        final restaurant = restaurants[index];
+        return _RestaurantItem(
+          restaurant: restaurant,
+          onPressed: () => onRestaurantPressed(restaurant),
+        );
+      },
+    );
+  }
+}
+
+class _PagedListView extends StatelessWidget {
+  const _PagedListView({
     required this.controller,
     required this.onRestaurantPressed,
   });
@@ -21,34 +81,28 @@ class RestaurantsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(x2),
-      child: PagedListView.separated(
-        pagingController: controller,
-        separatorBuilder: (context, index) => const Padding(
-          padding: EdgeInsets.only(bottom: x2),
-        ),
-        builderDelegate: PagedChildBuilderDelegate<Restaurant>(
-          noItemsFoundIndicatorBuilder: (context) {
-            return const Center(
-              child: Text('No items found'),
-            );
-          },
-          newPageProgressIndicatorBuilder: (context) {
-            return const LoadingWidget();
-          },
-          newPageErrorIndicatorBuilder: (context) {
-            return const Center(
-              child: Text('New Page Error'),
-            );
-          },
-          itemBuilder: (context, restaurant, index) {
-            return _RestaurantItem(
-              restaurant: restaurant,
-              onPressed: () => onRestaurantPressed(restaurant),
-            );
-          },
-        ),
+    final l10n = ErrorsL10n.of(context);
+    return PagedListView.separated(
+      pagingController: controller,
+      separatorBuilder: (context, index) => const Padding(
+        padding: EdgeInsets.only(bottom: x2),
+      ),
+      builderDelegate: PagedChildBuilderDelegate<Restaurant>(
+        noItemsFoundIndicatorBuilder: (context) {
+          return ErrorWidget(message: l10n.noItems);
+        },
+        newPageProgressIndicatorBuilder: (context) {
+          return const LoadingWidget();
+        },
+        newPageErrorIndicatorBuilder: (context) {
+          return ErrorWidget(message: l10n.newPage);
+        },
+        itemBuilder: (context, restaurant, index) {
+          return _RestaurantItem(
+            restaurant: restaurant,
+            onPressed: () => onRestaurantPressed(restaurant),
+          );
+        },
       ),
     );
   }
@@ -65,6 +119,7 @@ class _RestaurantItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = RestaurantL10n.of(context);
     return GestureDetector(
       onTap: onPressed,
       child: Card(
@@ -86,7 +141,7 @@ class _RestaurantItem extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          restaurant.name ?? 'Restaurant Name',
+                          restaurant.name ?? l10n.emptyName,
                           style: AppTextStyles.loraRegularTitle,
                         ),
                       ),
