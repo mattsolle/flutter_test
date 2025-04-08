@@ -8,6 +8,7 @@
 .buildlog/
 .history
 .svn/
+.env
 
 # IntelliJ related
 *.iml
@@ -19,10 +20,15 @@
 # VS Code which you may wish to be included in version control, so this line
 # is commented out by default.
 #.vscode/
+.vscode/settings.json
 
 # Flutter/Dart/Pub related
 **/doc/api/
 **/ios/Flutter/.last_build_id
+ios/Flutter/Debug.xcconfig
+ios/Flutter/Release.xcconfig
+ios/Runner.xcodeproj/project.pbxproj
+ios/Runner.xcworkspace/contents.xcworkspacedata
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
@@ -46,4 +52,6 @@ app.*.map.json
 /android/app/release
 
 # fvm
-.fvm/flutter_sdk
+.fvm/
+.fvmrc
+.fvm/fvm_config.json

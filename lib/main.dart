@@ -1,14 +1,32 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:restaurant_tour/models/restaurant.dart';
-import 'package:restaurant_tour/query.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:go_router/go_router.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:restaurant_tour/core/constants/app_strings.dart';
+import 'package:restaurant_tour/core/di/service_locator.dart';
+import 'package:restaurant_tour/features/restaurant/presentation/cubits/favourite_restaurants/favourite_restaurants_cubit.dart';
+import 'package:restaurant_tour/features/restaurant/presentation/cubits/tab_navigation/tab_navigation_cubit.dart';
 
-const _apiKey = '<PUT YOUR API KEY HERE>';
-const _baseUrl = 'https://api.yelp.com/v3/graphql';
+import 'core/theme/app_theme.dart';
+import 'core/observer/bloc_observer.dart';
+import 'features/restaurant/presentation/blocs/restaurant/restaurant_bloc.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await dotenv.load(fileName: ".env");
+
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory:
+        HydratedStorageDirectory((await getTemporaryDirectory()).path),
+  );
+
+  await setupLocator();
+
+  Bloc.observer = getIt<AppBlocObserver>();
+
   runApp(const RestaurantTour());
 }
 
@@ -17,70 +35,22 @@ class RestaurantTour extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Restaurant Tour',
-      home: HomePage(),
-    );
-  }
-}
-
-// TODO: Architect code
-// This is just a POC of the API integration
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  Future<RestaurantQueryResult?> getRestaurants({int offset = 0}) async {
-    final headers = {
-      'Authorization': 'Bearer $_apiKey',
-      'Content-Type': 'application/graphql',
-    };
-
-    try {
-      final response = await http.post(
-        Uri.parse(_baseUrl),
-        headers: headers,
-        body: query(offset),
-      );
-
-      if (response.statusCode == 200) {
-        return RestaurantQueryResult.fromJson(
-          jsonDecode(response.body)['data']['search'],
-        );
-      } else {
-        print('Failed to load restaurants: ${response.statusCode}');
-        return null;
-      }
-    } catch (e) {
-      print('Error fetching restaurants: $e');
-      return null;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('Restaurant Tour'),
-            ElevatedButton(
-              child: const Text('Fetch Restaurants'),
-              onPressed: () async {
-                try {
-                  final result = await getRestaurants();
-                  if (result != null) {
-                    print('Fetched ${result.restaurants!.length} restaurants');
-                  } else {
-                    print('No restaurants fetched');
-                  }
-                } catch (e) {
-                  print('Failed to fetch restaurants: $e');
-                }
-              },
-            ),
-          ],
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => getIt<TabNavigationCubit>()),
+        BlocProvider<RestaurantBloc>(
+          create: (context) =>
+              getIt<RestaurantBloc>()..add(FetchRestaurantsEvent(0)),
         ),
+        BlocProvider(create: (context) => getIt<FavoriteRestaurantsCubit>()),
+      ],
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        title: AppStrings.appTitle,
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: ThemeMode.system,
+        routerConfig: getIt<GoRouter>(),
       ),
     );
   }

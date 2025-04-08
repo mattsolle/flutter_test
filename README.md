@@ -1,202 +1,191 @@
-# Restaurant Tour
+# Restaurant Tour – Showcase Documentation
 
-Welcome to Superformula's Coding challenge, we are excited to see what you can build!
+## 🔍 Overview
 
-This take home test aims to evaluate your skills in building a Flutter application. We are looking for a well-structured and well-tested application that demonstrates your knowledge of Flutter and the Dart language.
+Restaurant Tour is a Flutter-based showcase application developed to demonstrate production-ready Flutter development practices, scalable architecture, and robust state management. The application allows users to browse a list of restaurants, view detailed information, and manage a list of favorites—all backed by Yelp’s GraphQL API.
 
-We are not looking for pixel perfect designs, but we are looking for a well-structured application that demonstrates your skills and best practices developing a flutter application. We know there are many ways to solve a problem, and we are interested in seeing how you approach this one. If you have any questions, please don't hesitate to ask.
+This is a **showcase project**, not a client application, and is designed to reflect clean code principles, testability, and real-world use of Flutter frameworks.
 
-Things we'll be looking on your submission:
-- App structure for scalability
-- Error and optional (?) handling
-- Widget tree optimization
-- State management
-- Test coverage
+---
 
-Think of the app you'll be building as the final product, do not over engineer it for possible future features, but do not under engineer it either. We are looking for a balance. We want that the functionalities that you implement are well thought out and implemented.
+## 🏗 Architecture Overview
 
-As an example, for the favorites feature you can simply use SharedPreferences, you don't need to use a complex database solution, but we're looking for a solid shared preferences implementation.
+The project follows **Domain-Driven Design (DDD)** principles, structured into clearly separated layers:
+
+- **Data Layer**: Responsible for data retrieval and persistence. This includes API service calls, DTOs, and repositories.
+- **Domain Layer**: Contains business logic, use cases, and entities. It defines abstract contracts implemented in the data layer.
+- **Presentation Layer**: Manages UI and user interaction using BLoC/Cubit for state management.
+- **Core Module**: Includes shared constants, routing configuration, themes, utility functions, and dependency injection setup.
+
+**State Management** is implemented using the **BLoC/Cubit pattern**, and **GoRouter** is used for navigation, ensuring a clean and scalable approach to routing.
+
+---
+
+## 📁 Directory Structure
+```
+lib/
+├── core/                        # Shared configurations and utilities
+│   ├── constants/               # Static strings, keys, and configuration values
+│   ├── di/                      # Dependency Injection setup using get_it
+│   ├── network/                 # GraphQL client, interceptors, and helpers
+│   ├── observer/                # BlocObserver for logging state transitions
+│   ├── routes/                  # go_router setup for navigation
+│   ├── theme/                   # App-wide theming, colors, typography
+│   └── utils/                   # Generic helper methods and extensions
+│
+├── features/
+│   └── restaurant/              # Restaurant-specific logic
+│       ├── data/                # DTOs, models, repository implementations, API services
+│       ├── domain/              # Business logic: entities, repository contracts, use cases
+│       └── presentation/        # UI layer: screens, widgets, BLoC/Cubit logic
+│
+└── main.dart                    # App bootstrap and root widget
+```
+---
+
+## ✨ Features
+
+### 🗂 Restaurant List Page
+
+- Tab bar navigation:
+  - ⭐ Favorites (stored locally using `hydrated_bloc`)
+  - 🍽 All Restaurants (fetched via Yelp GraphQL API)
+- Displays:
+  - Hero image
+  - Name, price, category
+  - Rating (rounded)
+  - Open/Closed status
+
+### 🔍 Restaurant Detail Page
+
+- Hero image with animation
+- Name, rating, price, and category
+- Full address
+- List of user reviews:
+  - Username
+  - Avatar
+  - Snippet of review text
+- Ability to favorite/unfavorite restaurants
+
+---
+
+## 🧠 State Management
+
+- `flutter_bloc`: For predictable and testable state handling
+- `hydrated_bloc`: To persist favorites state locally
+- `bloc_test`: For unit and state transition testing
+
+The architecture promotes separation of concerns by handling business logic, events, and state within BLoCs and keeping widgets focused on rendering.
+
+---
+
+## 🌐 Routing & Navigation
+
+- Uses `go_router` for structured, declarative routing
+- Nested navigation and animated transitions supported
+- Defined routes for list screen and detail screen with parameters
+
+---
+
+## ⚙️ Configuration & Setup
+The project uses the Yelp GraphQL API. API key management is handled securely through environment variables using flutter_dotenv.
+
+### `.env` File
+YELP_API_KEY=your_api_key_here
 
 
+### `config.dart`
 
-Be sure to read **all** of this document carefully, and follow the guidelines within.
-
-## Vendorized Flutter
-
-3. We use [fvm](https://fvm.app/) for managing the flutter version within the project. Using terminal, while being on the test repository, install the tools dependencies by running the following commands:
-
-    ```sh
-    dart pub global activate fvm
-    ```
-
-    The output of the command will ask to add the folder `./pub-cache/bin` to your PATH variables, if you didn't already. If that is the case, add it to your environment variables, and restart the terminal.
-
-    ```sh
-    export PATH="$PATH":"$HOME/.pub-cache/bin" # Add this to your environment variables
-    ```
-
-4. Install the project's flutter version using `fvm`.
-
-    ```sh
-    fvm use
-    ```
-
-5. From now on, you will run all the flutter commands with the `fvm` prefix. Get all the projects dependencies.
-
-    ```sh
-    fvm flutter pub get
-    ```
-
-More information on the approach can be found here:
-
-> hhttps://fvm.app/docs/getting_started/installation
-
-From the root directory:
-
-
-### IDE Setup
-
-<details>
-<summary>Use with VSCode</summary>
-<p>
-
-If you're a VScode user link the new Flutter SDK path in your settings
-`$projectRoot/.vscode/settings.json` (create if it doesn't exist yet)
-
-```json
-{
-  "dart.flutterSdkPath": ".fvm/flutter_sdk"
-}
+```dart
+const String yelpGraphQLUrl = "https://api.yelp.com/v3/graphql";
+final String yelpApiKey = dotenv.env['YELP_API_KEY'] ?? "";
 ```
 
 
-</p>
-</details>
+## 💪 Testing Strategy
 
-<details>
-<summary>Use with IntelliJ / Android Studio</summary>
-<p>
+Testing is a crucial aspect of this project to ensure its reliability, maintainability, and scalability. The following approach was taken to cover all layers of the app using appropriate test types.
 
-Go to `Preferences > Languages & Frameworks > Flutter` and set the Flutter SDK path to `$projectRoot/.fvm/flutter_sdk`
+### ✅ Test Types & Coverage
 
-<img width="800" alt="IntelliJ Settings" src="https://user-images.githubusercontent.com/1096485/64658026-3a1fdd00-d436-11e9-9457-556059f68e2c.png">
+| Test Type         | Coverage Description                                                                 |
+|------------------|----------------------------------------------------------------------------------------|
+| **Unit Tests**    | Test business logic like blocs, use cases, and utility functions                     |
+| **Widget Tests**  | Verify UI behavior of screens and widgets under different states                     |
+| **Golden Tests**  | Snapshot testing of UI for visual regressions using `alchemist`                      |
+| **Integration**   | Simulate complete user journeys and validate routing, state transitions, etc.        |
 
-</p>
-</details>
+> ✅ **Focus**: Testing logic and visuals critical to app behavior over striving for 100% coverage
 
-## Requirements
+---
 
-### App Structure
+### 📁 `test/` Directory Structure
+```
+test/
+├── golden_tests/        # UI snapshot testing with Alchemist
+├── integration_tests/   # End-to-end flows and navigation
+├── unit_tests/
+│   ├── core/            # Utility and service testing
+│   └── features/        # BLoC and business logic
+└── widget_tests/
+    └── screens/         # Widget behavior in screens
+```
 
-#### Restaurant List Page
+### 🔮 Testing Tools & Packages
 
-- Tab Bar
-  - List of favorites (stored client side)
-  - List of businesses
-    - Hero image
-    - Name
-    - Price
-    - Category
-    - Rating (rounded to the nearest value)
-    - Open/Closed
+- `flutter_test` – Built-in Flutter testing framework
+- `mocktail` – Mocking dependencies in unit and widget tests
+- `bloc_test` – State transition testing for blocs and cubits
+- `integration_test` – Flutter's official integration testing library
+- `alchemist` – Modern golden test runner with visual snapshot comparison
 
-#### Restaurant Detail View
+---
 
-- Ability to favorite a business
-- Name
-- Hero image
-- Price and category
-- Address
-- Rating
-- Total reviews
-- List of reviews
-  - User name
-  - Rating
-  - User image
-  - Review Text (These are just snippets of the full review, usually like 3-4 lines long)
+### 🎥 CI/CD Friendly
 
-#### Misc.
+- Tests are deterministic and do not rely on external APIs.
+- Yelp API calls are mocked using repository abstractions.
+- Golden test images can be committed or compared in CI pipelines.
 
-- Clear documentation on the structure and architecture of your application.
-- Clear and logical commit messages.
-  - We suggest following [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+---
 
-## Test Coverage
+## 🛠️ Build & Environment Setup
 
-To demonstrate your experience writing different types of tests in Flutter please do the following:
+### 🚀 Prerequisites
 
-- We are looking to see how you write tests in Flutter. We are not looking for 100% coverage but we are looking for a good mix of unit and widget tests.
-- We are specially looking for you to cover at least one file for each domain layer (interface, application, repositories, etc).
+- Install [FVM](https://fvm.app/) (Flutter Version Manager)
 
-Feel free to add more tests as you see fit but the above is the minimum requirement.
+```bash
+dart pub global activate fvm
+export PATH="$PATH":"$HOME/.pub-cache/bin"
+```
 
-## Design
+## Setup Project
+```bash
+fvm use           # Use the version defined in .fvm/fvm_config.json
+fvm flutter pub get
+```
 
-- See this [Figma File](https://www.figma.com/file/KsEhQUp66m9yeVkvQ0hSZm/Flutter-Test?node-id=0%3A1) for design information related to the overall look and feel of the application. We do not expect pixel-perfection but would like the application to visually be close to what is specified in the Figma file.
+## 🔑 Add Yelp API Key
+In lib/core/constants/config.dart, the following code retrieves the API key:
 
-![List View](screenshots/listview.png)
-![Detail View](screenshots/detailview.png)
+```bash
+final String yelpApiKey = dotenv.env['YELP_API_KEY'] ?? "";
+```
 
-## API
+## ▶️ Run the App
+```bash
+fvm flutter run
+```
 
-The [Yelp GraphQL API](https://www.yelp.com/developers/graphql/guides/intro) is used as the API for this Application. We have provided the boilerplate of the API requests and backing data models to save you some time. To successfully make a request to the Yelp GraphQL API, please follow these steps:
+## 💪 Run Tests
+```bash
+# Run unit & widget tests
+fvm flutter test
 
-1. Please go to https://www.yelp.com/signup and sign up for a developer account.
-1. Once signed up, navigate to https://www.yelp.com/developers/v3/manage_app.
-1. Create a new app by filling out the required information.
-1. Once your app is created, scroll down and join the `Developer Beta`. This allows you to use the GraphQL API.
-1. Copy your API Key from your app page and paste it on `line 5` [yelp_repository.dart](app/lib/yelp_repository.dart) replacing the `<PUT YOUR API KEY HERE>` with your key.
-1. Run the app and tap the `Fetch Restaurants` button. If you see a log like `Fetched x restaurants` you are all set!
+# Run integration tests
+fvm flutter test integration_test
 
-## Technical Requirements
-
-### State Management
-
-Please restrict your usage of state management or dependency injection to the following options:
-
-1. [provider](https://pub.dev/packages/provider)
-2. [Riverpod](https://pub.dev/packages/riverpod)
-3. [bloc](https://pub.dev/packages/bloc)
-4. [get_it](https://pub.dev/packages/get_it)/[get_it_mixins](https://pub.dev/packages/get_it_mixin)
-5. [Mobx](https://pub.dev/packages/mobx)
-
-We ask this because this challenge values consistency and efficiency over ingenuity. Using commonly used libraries ensures that we can review your code in a timely manner and allows us to provide better feedback.
-
-## Coding Values
-
-At **Superformula** we strive to build applications that have
-
-- Consistent architecture
-- Extensible, clean code
-- Solid testing
-- Good security & performance best practices
-
-### Clear, consistent architecture
-
-Approach your submission as if it were a real world app. This includes Use any libraries that you would normally choose.
-
-_Please note: we're interested in your code & the way you solve the problem, not how well you can use a particular library or feature._
-
-### Easy to understand
-
-Writing boring code that is easy to follow is essential at **Superformula**.
-
-We're interested in your method and how you approach the problem just as much as we're interested in the end result.
-
-### Solid testing approach
-
-While the purpose of this challenge is not to gauge whether you can achieve 100% test coverage, we do seek to evaluate whether you know how & what to test.
-
-## Q&A
-
-> Where should I send back the result when I'm done?
-
-Please fork this repo and then send us a pull request to our repo when you think you are done. There is no deadline for this task unless otherwise noted to you directly.
-
-> What if I have a question?
-
-Just create a new issue in this repo and we will respond and get back to you quickly.
-
-## Review
-
-The coding challenge is a take-home test upon which we'll be conducting a thorough code review once complete. The review will consist of meeting some more of our mobile engineers and giving a review of the solution you have designed. Please be prepared to share your screen and run/demo the application to the group. During this process, the engineers will be asking questions.
+# Run golden tests 
+fvm flutter test test/golden_tests
+```
