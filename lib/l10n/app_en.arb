@@ -1,0 +1,16 @@
+{
+  "restaurantTour": "RestaurantTour",
+  "allRestaurants": "All Restaurants",
+  "myFavorites": "My Favorites",
+  "openNow": "Open Now",
+  "closed": "Closed",
+  "invalidRestaurant": "Invalid Restaurant",
+  "unexpectedErrorHappenedWhileLoadingTheRestaurant": "An unexpected error happened while loading the restaurant",
+  "restaurant": "Restaurant",
+  "restaurantDetails": "Restaurant Details",
+  "loading": "Loading",
+  "error": "Error",
+  "address": "Address",
+  "overallRating": "Overall Rating",
+  "xReviews": "{x, plural, =0{No reviews} =1{One review} other{{x} reviews}}"
+}

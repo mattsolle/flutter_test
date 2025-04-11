@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'theme_extensions/app_typography.dart';
+
 class AppTextStyles {
   ////----- Lora -----//
   static const loraRegularHeadline = TextStyle(
@@ -38,12 +40,21 @@ class AppTextStyles {
     fontSize: 12.0,
     color: Colors.black,
   );
-
   static const openRegularItalic = TextStyle(
     fontFamily: 'OpenSans',
     fontWeight: FontWeight.w400,
     fontStyle: FontStyle.italic,
     fontSize: 12.0,
     color: Colors.black,
+  );
+
+  static const AppTypography defaultTypography = AppTypography(
+    loraRegularHeadline: loraRegularHeadline,
+    loraRegularTitle: loraRegularTitle,
+    openRegularHeadline: openRegularHeadline,
+    openRegularTitleSemiBold: openRegularTitleSemiBold,
+    openRegularTitle: openRegularTitle,
+    openRegularText: openRegularText,
+    openRegularItalic: openRegularItalic,
   );
 }
